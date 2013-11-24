@@ -132,7 +132,7 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         $scope.getPlaylist = function () {
             var object = $scope.object;
             if (object.type === 'audios') {
-                vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId}).then(function (response) {
+                vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId || 0}).then(function (response) {
                     $scope.openPlaylist(response.items);
                 });
             }
