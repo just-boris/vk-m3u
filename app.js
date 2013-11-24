@@ -108,7 +108,7 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         $scope.loadUrl = function () {
             var object = linkParser($scope.objectUrl);
             $location.search('page', $scope.objectUrl);
-            $scope.object = null;
+            $scope.object = false;
             if (object) {
                 if (object.type === 'audios') {
                     object.typeTitle = 'Audios of';

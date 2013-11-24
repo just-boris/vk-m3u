@@ -17,7 +17,7 @@
             <input type="url" class="link-form-input topcoat-text-input--large" ng-model="objectUrl" placeholder="http://vk.com">
             <button class="link-form-submit topcoat-button--large--cta">Grab!</button>
         </form>
-        <p class="ng-cloak failure" ng-show="object == null && !loading">Invalid url</p>
+        <p class="ng-cloak failure" ng-show="object == false && !loading">Invalid url</p>
         <div class="ng-cloak result" ng-if="object" >
             <div class="result-image"><img ng-src="{{object.photo_50}}" alt=""/></div>
             <div class="result-name">
