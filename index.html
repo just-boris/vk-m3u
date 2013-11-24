@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-desktop-light.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/normalize/2.1.3/normalize.css"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <title>VK playlist grabber</title>
+</head>
+<body ng-app="VkGrabApp" ng-controller="AppCtrl" ng-switch="loggedIn">
+    <div class="block" ng-switch-when="false">
+        <h1 class="page-title">Get playlist from VK into m3u file</h1>
+        <button class="login-button topcoat-button--large--cta" ng-click="login()">Sign in to VK!</button>
+    </div>
+    <div class="block" ng-controller="GrabCtrl" ng-switch-when="true">
+        <h1 class="page-title">Enter link to grab tracks from</h1>
+        <form class="link-form" ng-submit="loadUrl()">
+            <input type="url" class="link-form-input topcoat-text-input--large" ng-model="objectUrl" placeholder="http://vk.com">
+            <button class="link-form-submit topcoat-button--large--cta">Grab!</button>
+        </form>
+        <div class="ng-cloak result" ng-if="object" >
+            <div class="result-image"><img ng-src="{{object.photo_50}}" alt=""/></div>
+            <div class="result-name">
+                <p>{{object.typeTitle}} <a ng-href="//vk.com/{{object.screen_name}}">{{object.name}}</a></p>
+                <p><i ng-pluralize count="object.audioTotal" when="{one: '{} track', other: '{} tracks'}"></i></p>
+            </div>
+        </div>
+        <div class="download ng-cloak" ng-if="object"><button class="download-button topcoat-button--large--cta" ng-click="getPlaylist()">Get .m3u playlist!</button></div>
+    </div>
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js" ></script>
+    <script>
+        VK.init({apiId: 4017268});
+    </script>
+    <script type="text/javascript" src="//code.angularjs.org/1.2.2/angular.min.js"></script>
+    <script type="text/javascript" src="vk.js"></script>
+    <script type="text/javascript" src="playlist.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</body>
+</html>

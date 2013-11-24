@@ -1,0 +1,61 @@
+.ng-cloak {
+    display: none;
+}
+
+.topcoat-button--large--cta {
+    cursor: pointer;
+}
+
+.block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 25px;
+    border-radius: 5px;
+}
+
+.page-title {
+    text-align: center;
+    margin-top: 0;
+}
+
+.login-button {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+.link-form {
+    white-space: nowrap;
+}
+
+.link-form-input {
+    width: 80%;
+}
+.link-form-submit {
+    width: 20%;
+}
+
+.result, .download {
+    margin-top: 1.34em;
+}
+
+.result-image {
+    float: left;
+    margin-right: 5px;
+}
+
+.result-name p {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.download-button {
+    width: 100%;
+}
