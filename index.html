@@ -12,16 +12,17 @@
         <button class="login-button topcoat-button--large--cta" ng-click="login()">Sign in to VK!</button>
     </div>
     <div class="block" ng-controller="GrabCtrl" ng-switch-when="true">
-        <h1 class="page-title">Enter link to grab tracks from</h1>
+        <h1 class="page-title">Enter link to grab tracks</h1>
         <form class="link-form" ng-submit="loadUrl()">
             <input type="url" class="link-form-input topcoat-text-input--large" ng-model="objectUrl" placeholder="http://vk.com">
             <button class="link-form-submit topcoat-button--large--cta">Grab!</button>
         </form>
+        <p class="ng-cloak failure" ng-show="object == null && !loading">Invalid url</p>
         <div class="ng-cloak result" ng-if="object" >
             <div class="result-image"><img ng-src="{{object.photo_50}}" alt=""/></div>
             <div class="result-name">
                 <p>{{object.typeTitle}} <a ng-href="//vk.com/{{object.screen_name}}">{{object.name}}</a></p>
-                <p><i ng-pluralize count="object.audioTotal" when="{one: '{} track', other: '{} tracks'}"></i></p>
+                <p ng-if="object.audioTotal"><i ng-pluralize count="object.audioTotal" when="{one: '{} track', other: '{} tracks'}"></i></p>
             </div>
         </div>
         <div class="download ng-cloak" ng-if="object"><button class="download-button topcoat-button--large--cta" ng-click="getPlaylist()">Get .m3u playlist!</button></div>

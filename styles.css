@@ -42,8 +42,13 @@
     width: 20%;
 }
 
+.failure {
+    color: #EC514E;
+}
+
 .result, .download {
     margin-top: 1.34em;
+    overflow: hidden;
 }
 
 .result-image {
