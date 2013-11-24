@@ -1,5 +1,5 @@
 /* global angular */
-angular.module('playlist', []).factory('playlistLoader', function() {
+angular.module('vkgrab.playlist', []).factory('playlistLoader', function() {
     "use strict";
     return function(tracks) {
         return '#EXTM3U' + tracks.map(function(track) {

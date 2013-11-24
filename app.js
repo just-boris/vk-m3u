@@ -1,5 +1,5 @@
 /* global angular */
-angular.module('VkGrabApp', ['playlist', 'vk'])
+angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
     .value('location', location)
     .controller('AppCtrl', function ($scope, VK) {
         "use strict";
@@ -55,8 +55,8 @@ angular.module('VkGrabApp', ['playlist', 'vk'])
             }, errback);
         }
 
-        function loadWall(owner_id, offset, tracks, callback) {
-            vk('wall.get', {owner_id: owner_id, offset: offset, count: 100}).then(function (response) {
+        function loadWall(object, offset, tracks, callback) {
+            vk('wall.get', {owner_id: object.owner_id, offset: offset, count: 100, filter: object.own ? 'owner': 'all'}).then(function (response) {
                 tracks = tracks || [];
                 response.items.forEach(function(post) {
                     if(post.attachments && post.attachments.length) {
@@ -68,7 +68,7 @@ angular.module('VkGrabApp', ['playlist', 'vk'])
                     }
                 });
                 if(response.count > 100) {
-                    loadWall(owner_id, offset+100, tracks, callback);
+                    loadWall(object, offset+100, tracks, callback);
                 }
                 else {
                     callback(tracks);
@@ -127,12 +127,12 @@ angular.module('VkGrabApp', ['playlist', 'vk'])
         $scope.getPlaylist = function () {
             var object = $scope.object;
             if (object.type === 'audios') {
-                vk('audio.get', {owner_id: object.owner_id}).then(function (response) {
+                vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId}).then(function (response) {
                     $scope.openPlaylist(response.items);
                 });
             }
             else {
-                loadWall(object.owner_id, 0, [], function(tracks) {
+                loadWall(object, 0, [], function(tracks) {
                     $scope.openPlaylist(tracks);
                 });
             }
@@ -141,37 +141,4 @@ angular.module('VkGrabApp', ['playlist', 'vk'])
         if ($scope.objectUrl) {
             $scope.loadUrl();
         }
-    }).factory('linkParser', function () {
-        'use strict';
-        function tryParseAudios(uri) {
-            var matches = /audios(-)?(\d*)/.exec(uri);
-            if (matches) {
-                return {
-                    type: 'audios',
-                    owner_id: (matches[1] ? -1 : 1) * matches[2]
-                };
-            }
-            return false;
-        }
-
-        function tryParseWall(uri) {
-            var matches = /wall(-)?(\d*)/.exec(uri);
-            if (matches) {
-                return {
-                    type: 'wall',
-                    owner_id: (matches[1] ? -1 : 1) * matches[2]
-                };
-            }
-            return false;
-        }
-
-        return function (link) {
-            var linkMath = /http:\/\/vk\.com\/(.*)/.exec(link);
-            if (!linkMath || !linkMath[1]) {
-                return;
-            }
-            return tryParseAudios(linkMath[1]) ||
-                   tryParseWall(linkMath[1]) ||
-                   { type: 'wall', domain: linkMath[1]};
-        };
     });

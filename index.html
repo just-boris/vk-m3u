@@ -22,7 +22,9 @@
             <div class="result-image"><img ng-src="{{object.photo_50}}" alt=""/></div>
             <div class="result-name">
                 <p>{{object.typeTitle}} <a ng-href="//vk.com/{{object.screen_name}}">{{object.name}}</a></p>
-                <p ng-if="object.audioTotal"><i ng-pluralize count="object.audioTotal" when="{one: '{} track', other: '{} tracks'}"></i></p>
+                <p ng-if="object.audioTotal && !object.albumId"><i ng-pluralize count="object.audioTotal" when="{one: '{} track', other: '{} tracks'}"></i></p>
+                <p ng-if="object.albumId"><i>from album {{object.albumId}}</i></p>
+                <p ng-if="object.own"><i>only mine</i></p>
             </div>
         </div>
         <div class="download ng-cloak" ng-if="object"><button class="download-button topcoat-button--large--cta" ng-click="getPlaylist()">Get .m3u playlist!</button></div>
@@ -34,6 +36,7 @@
     <script type="text/javascript" src="//code.angularjs.org/1.2.2/angular.min.js"></script>
     <script type="text/javascript" src="vk.js"></script>
     <script type="text/javascript" src="playlist.js"></script>
+    <script type="text/javascript" src="linkParser.js"></script>
     <script type="text/javascript" src="app.js"></script>
 </body>
 </html>
