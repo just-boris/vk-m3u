@@ -32,11 +32,14 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         }
 
         function loadProfile(object) {
-            vk('users.get', {
-                user_ids: object.owner_id,
+            var params = {
                 name_case: 'gen',
                 fields: ['photo_50', 'screen_name', 'counters'].join(',')
-            }).then(function (response) {
+            };
+            if(object.owner_id) {
+                params.owner_id = object.owner_id;
+            }
+            vk('users.get', params).then(function (response) {
                 var result = response[0];
                 result.name = [result.first_name, result.last_name].join(" ");
                 applyObjectInfo(object, result);
@@ -79,8 +82,8 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         }
 
         function loadObjectInfo(object) {
-            if (object.owner_id) {
-                if (object.owner_id > 0) {
+            if (angular.isDefined(object.owner_id)) {
+                if (object.owner_id >= 0) {
                     loadProfile(object);
                 }
                 else {
@@ -104,11 +107,13 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
                 }, errback);
             }
         }
-
+        $scope.hasError = function() {
+            return $scope.object === null && !$scope.loading;
+        };
         $scope.loadUrl = function () {
             var object = linkParser($scope.objectUrl);
             $location.search('page', $scope.objectUrl);
-            $scope.object = false;
+            $scope.object = null;
             if (object) {
                 if (object.type === 'audios') {
                     object.typeTitle = 'Audios of';
