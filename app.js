@@ -37,7 +37,7 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
                 fields: ['photo_50', 'screen_name', 'counters'].join(',')
             };
             if(object.owner_id) {
-                params.owner_id = object.owner_id;
+                params.user_ids = object.owner_id;
             }
             vk('users.get', params).then(function (response) {
                 var result = response[0];

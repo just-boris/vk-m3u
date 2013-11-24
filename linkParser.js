@@ -14,7 +14,7 @@ angular.module('vkgrab.linkParser', []).factory('linkParser', function () {
     }
 
     function tryParseMyMusic(uri) {
-        var matches = /audio(?:\?album_id=(\d+))?/.exec(uri);
+        var matches = /audio(?:\?album_id=(\d+))?$/g.exec(uri);
         if (matches) {
             return {
                 type: 'audios',
@@ -38,11 +38,12 @@ angular.module('vkgrab.linkParser', []).factory('linkParser', function () {
     }
 
     return function (link) {
-        var linkMath = /http:\/\/vk\.com\/(.*)/.exec(link);
+        var linkMath = /http(?:s)?:\/\/vk\.com\/(.*)/.exec(link);
         if (!linkMath || !linkMath[1]) {
             return;
         }
-        return tryParseMyMusic(linkMath[1]) || tryParseAudios(linkMath[1]) ||
+        return tryParseMyMusic(linkMath[1]) ||
+            tryParseAudios(linkMath[1]) ||
             tryParseWall(linkMath[1]) ||
         { type: 'wall', domain: linkMath[1]};
     };
