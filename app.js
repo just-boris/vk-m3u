@@ -32,14 +32,11 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         }
 
         function loadProfile(object) {
-            var params = {
+            vk('users.get', {
                 name_case: 'gen',
+                user_ids: object.owner_id,
                 fields: ['photo_50', 'screen_name', 'counters'].join(',')
-            };
-            if(object.owner_id) {
-                params.user_ids = object.owner_id;
-            }
-            vk('users.get', params).then(function (response) {
+            }).then(function (response) {
                 var result = response[0];
                 result.name = [result.first_name, result.last_name].join(" ");
                 applyObjectInfo(object, result);
@@ -82,15 +79,7 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         }
 
         function loadObjectInfo(object) {
-            if (angular.isDefined(object.owner_id)) {
-                if (object.owner_id >= 0) {
-                    loadProfile(object);
-                }
-                else {
-                    loadGroup(object);
-                }
-            }
-            else if (object.domain) {
+            if (object.domain) {
                 vk('utils.resolveScreenName', {screen_name: object.domain}).then(function (response) {
                     switch (response.type) {
                         case 'user':
@@ -105,6 +94,11 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
                             setLoading(false);
                     }
                 }, errback);
+            }
+            else if (object.owner_id < 0) {
+                loadGroup(object);
+            } else {
+                loadProfile(object);
             }
         }
         $scope.hasError = function() {
@@ -132,7 +126,7 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         $scope.getPlaylist = function () {
             var object = $scope.object;
             if (object.type === 'audios') {
-                vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId || 0}).then(function (response) {
+                vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId}).then(function (response) {
                     $scope.openPlaylist(response.items);
                 });
             }

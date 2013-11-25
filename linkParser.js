@@ -18,8 +18,7 @@ angular.module('vkgrab.linkParser', []).factory('linkParser', function () {
         if (matches) {
             return {
                 type: 'audios',
-                albumId: matches[1],
-                owner_id: 0
+                albumId: matches[1]
             };
         }
         return false;

@@ -5,6 +5,11 @@ angular.module('vk', [])
     'use strict';
     return function(method, params) {
         var deferred = $q.defer();
+        angular.forEach(params, function(val, key) {
+            if(!angular.isDefined(val)){
+                delete params[key];
+            }
+        });
         VK.Api.call(method, angular.extend({v: '5.4', lang: 'en'}, params), function(r) {
             if(r.response) {
                 deferred.resolve(r.response);
