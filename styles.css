@@ -36,10 +36,7 @@
 }
 
 .link-form-input {
-    width: 80%;
-}
-.link-form-submit {
-    width: 20%;
+    width: 100%;
 }
 
 .failure {

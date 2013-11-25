@@ -104,9 +104,10 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
         $scope.hasError = function() {
             return $scope.object === null && !$scope.loading;
         };
-        $scope.loadUrl = function () {
-            var object = linkParser($scope.objectUrl);
-            $location.search('page', $scope.objectUrl);
+        $scope.loadUrl = function (url) {
+            url = url || $scope.objectUrl;
+            var object = linkParser(url);
+            $location.search('page', url);
             $scope.object = null;
             if (object) {
                 if (object.type === 'audios') {

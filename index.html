@@ -14,8 +14,7 @@
     <div class="block" ng-controller="GrabCtrl" ng-switch-when="true">
         <h1 class="page-title">Enter link to grab tracks</h1>
         <form class="link-form" ng-submit="loadUrl()">
-            <input type="url" class="link-form-input topcoat-text-input--large" ng-model="objectUrl" placeholder="http://vk.com">
-            <button class="link-form-submit topcoat-button--large--cta">Grab!</button>
+            <input type="url" class="link-form-input topcoat-text-input--large" ng-model="objectUrl" placeholder="http://vk.com" ng-blur="loadUrl()" ng-paste="loadUrl($event.clipboardData.getData('text'))">
         </form>
         <p class="ng-cloak failure" ng-show="hasError()">Invalid url</p>
         <div class="ng-cloak result" ng-if="object" >
