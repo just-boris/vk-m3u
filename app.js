@@ -27,6 +27,9 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
             if(object.type === 'audios') {
                 object.audioTotal = result.counters.audios;
             }
+            else if(object.type === 'recommendations') {
+                object.audioTotal = 1000;
+            }
             object.photo_50 = result.photo_50;
             $scope.object = object;
         }
@@ -113,6 +116,9 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
                 if (object.type === 'audios') {
                     object.typeTitle = 'Audios of';
                 }
+                else if (object.type === 'recommendations') {
+                    object.typeTitle = 'Audios recommendations for';
+                }
                 else {
                     object.typeTitle = 'Audios from wall of';
                 }
@@ -128,6 +134,11 @@ angular.module('VkGrabApp', ['vkgrab.playlist', 'vkgrab.linkParser', 'vk'])
             var object = $scope.object;
             if (object.type === 'audios') {
                 vk('audio.get', {owner_id: object.owner_id, album_id: object.albumId}).then(function (response) {
+                    $scope.openPlaylist(response.items);
+                });
+            }
+            else if (object.type === 'recommendations') {
+                vk('audio.getRecommendations', {user_id: object.user_id, count: 1000, v: 5.9}).then(function (response) {
                     $scope.openPlaylist(response.items);
                 });
             }
