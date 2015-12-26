@@ -24,6 +24,17 @@ angular.module('vkgrab.linkParser', []).factory('linkParser', function () {
         return false;
     }
 
+    function tryParseMyRecommendations(uri) {
+        var matches = /audios(-)?(\d+)(?:\?act=recommendations)/.exec(uri);
+        if (matches) {
+            return {
+                type: 'recommendations',
+                user_id: matches[1]
+            };
+        }
+        return false;
+    }
+
     function tryParseWall(uri) {
         var matches = /wall(-)?(\d*)(\?own=1)?/.exec(uri);
         if (matches) {
@@ -41,7 +52,8 @@ angular.module('vkgrab.linkParser', []).factory('linkParser', function () {
         if (!linkMath || !linkMath[1]) {
             return;
         }
-        return tryParseMyMusic(linkMath[1]) ||
+        return tryParseMyRecommendations(linkMath[1]) ||
+            tryParseMyMusic(linkMath[1]) ||
             tryParseAudios(linkMath[1]) ||
             tryParseWall(linkMath[1]) ||
         { type: 'wall', domain: linkMath[1]};
